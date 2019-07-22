@@ -16,7 +16,7 @@ public class Client
 	// Prilikom pozivanja konstruktora, numerise klijenta.
 	private int index;
 	// Lista koja sadrzi fragmente.
-	private ArrayList <byte []> lista = null;
+	public ArrayList <byte []> lista = null;
 	
 	public Client (int in)
 	{
@@ -62,7 +62,7 @@ public class Client
 		}	
 	}
 
-	// Cita sadrzaj, dijeli ga na fragmente i upisuje u listu, mora se doraditi, nije dobro ovako.
+	// Cita sadrzaj, dijeli ga na fragmente i upisuje u listu. Koristicemo kod prvog klijenta.
 	public void procitaj ()
 	{
 		try
@@ -70,18 +70,37 @@ public class Client
 			FileInputStream fin = new FileInputStream ("C:\\Slika\\Poppy.jpg");
 			BufferedInputStream bin = new BufferedInputStream (fin);
 			
-			byte [] buf = new byte [Program.velFragm];
+			byte [] buf = new byte [Program.velFragm]; // fragmenti koje cemo dodavati u listu
 			int bytesRead = 0;
+			
+			if (Program.velFragm > Program.brojBajtova)
+			{
+				System.out.println ("Greska. Velicina fragmenta je veca od velicine fajla.");
+				System.exit (1);
+			}
+			
+			long temp = Program.brojBajtova - Program.brojBajtova % Program.velFragm;
+			// Posljednji dio, kada budemo dijelili, ne mora da bude velik kao i velFragm.
 			
 			while ((bytesRead = bin.read (buf)) != -1)
 			{
-				if (bytesRead % Program.velFragm == 0)
+				if (bytesRead % Program.velFragm == 0 && (bytesRead != temp || bytesRead == Program.brojBajtova))
 				{
 					lista.add (buf);
 					buf = null;
 					buf = new byte [Program.velFragm];
 				}
+				else
+					if (bytesRead == temp)
+					{
+						lista.add (buf);
+						buf = null;
+						buf = new byte [(int) temp];
+					}
 			}
+			
+			if (buf.length != 0)
+				lista.add (buf);
 			
 			bin.close ();
 		}
@@ -90,4 +109,6 @@ public class Client
 			System.out.println (ex);
 		}
 	}
+
 }
+
