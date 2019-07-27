@@ -95,7 +95,7 @@ public class Client
 					{
 						lista.add (buf);
 						buf = null;
-						buf = new byte [(int) temp];
+						buf = new byte [(int) Program.brojBajtova % Program.velFragm];
 					}
 			}
 			
