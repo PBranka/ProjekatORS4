@@ -21,6 +21,10 @@ public class Client
 	public Client (int in)
 	{
 		this.index = in;
+		this.lista = new ArrayList <byte []> (Program.brFragm);
+		
+		for (int i = 0; i < Program.brFragm; i++)
+			this.lista.add (null); // popunjavamo listu null elementima, treba nam kasnije u kodu zbog njene velicine
 	}
 	
 	// Kada klijent bude imao sav sadrzaj, sadrzaj prosljedjuje u direktorijum sa imenom Klijentindex.
@@ -65,6 +69,8 @@ public class Client
 	// Cita sadrzaj, dijeli ga na fragmente i upisuje u listu. Koristicemo kod prvog klijenta.
 	public void procitaj ()
 	{
+		lista.clear (); // zato sto imamo po postavci, zbog konstruktora, null vrijednosti u listi
+		
 		try
 		{
 			FileInputStream fin = new FileInputStream ("C:\\Slika\\Poppy.jpg");
@@ -82,16 +88,20 @@ public class Client
 			long temp = Program.brojBajtova - Program.brojBajtova % Program.velFragm;
 			// Posljednji dio, kada budemo dijelili, ne mora da bude velik kao i velFragm.
 			
-			while ((bytesRead = bin.read (buf)) != -1)
+			int brojac = 0;
+			
+			while ((bytesRead = bin.read (buf)) != -1) // bytesRead broji koliko je elemenata u buf dodato
+				                                       // zato dodajemo ovo brojac * ...
 			{
-				if (bytesRead % Program.velFragm == 0 && (bytesRead != temp || bytesRead == Program.brojBajtova))
+				if (bytesRead % Program.velFragm == 0 && (bytesRead + brojac * Program.velFragm != temp))
 				{
 					lista.add (buf);
 					buf = null;
 					buf = new byte [Program.velFragm];
+					brojac++;
 				}
 				else
-					if (bytesRead == temp)
+					if (bytesRead + brojac * Program.velFragm == temp)
 					{
 						lista.add (buf);
 						buf = null;
