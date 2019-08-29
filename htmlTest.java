@@ -2,22 +2,29 @@
   *	Prikaz u html aplikacije
   **/
 
-
-import java.awt.EventQueue;
-import java.awt.Frame;
-import javax.swing.JEditorPane;
+import javax.swing.*;
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.WindowConstants;
-//import javax.swing.*;			Ako JButton dodajemo... potrebna je ova biblioteka
+import javax.swing.JPanel;
+import java.awt.*;
 
 public class htmlTest {
 	public static void main (String[] args) {
-		StringBuffer result = new StringBuffer ("<html><body><h1>P2P model ispodurke sadrzaja</h1>");
+		
+		// 									>>> HTML NACIN <<<
+		
+		/*StringBuffer result = new StringBuffer ("<html><body><h1>P2P model ispodurke sadrzaja</h1>");
 		
 		
-			result.append("<button>Browse</button>");
-			result.append("<p></p>");
+		//	result.append("<button onclick="alert('Hello world!')">Browse</button>");
+			result.append("<script>");
+			result.append("function funct_1(){");
+			result.append("document.getElementById('aaa').innerHTML = 'Hello World';");
+			result.append("}");
+			result.append("</script>");
+			
+			result.append("<button onclick='funct_1()'>Browse</button>");
+			result.append("<p id='aaa'></p>");
 			result.append("<button>Download all</button>");
 			result.append("<p></p>");
 			result.append("<p>Item list:</p><ol>");
@@ -25,32 +32,55 @@ public class htmlTest {
 			{
 			result.append("<li>");
 			result.append("FilmN/SlikaM");
-			result.append("<progress"></progress>");
-			}*/
+			result.append("<progress></progress>");
+			}
 			result.append("</ol></body></html>");
 		
 		JEditorPane jer = new JEditorPane("text/html",result.toString() );
 		jer.setEditable(false);
 		JScrollPane scrollPane = new JScrollPane(jer);
+		*/
+		//									>>> JAVA NACIN <<<
+		
 		JFrame f = new JFrame ("P2P model ispodurke sadrzaja");
-		/*
+		f.setSize(600,600);
+		f.setVisible(true);
+		f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		
+		JPanel p = new JPanel();
+		f.add(p);
+		
 		JButton b1 = new JButton(); 
    		b1.setVisible(true);
     	b1.setText("Browse");
-        b1.setSize(70,210);
+        b1.setSize(150,30);
+        b1.setLocation(50,50);
+        
     	JButton b2 = new JButton(); 
    		b2.setVisible(true);
     	b2.setText("Download All");
-    	b2.setSize(70,210);
-    	f.add(b1);
-		f.add(b2);
+    	b2.setSize(150,30);
+    	b2.setLocation(50,110);
+    	
+    	p.add(b1);
+    	p.add(b2);
+    	
+		//EventQueue.invokeLater(new FrameShower(f));		// EventQueue dodajemo za slucaj velikih podataka da se uskladi racunanje i dizanje html forme
+		
+		/*							>>> Progres bar <<<
+		progressBar = new JProgressBar();
+		progressBar.setIndeterminate(true);
+		progressBar.setValue(0);
+		progressBar.setMaximum(100);
+		
+		public void propertyChange(PropertyChangeEvent evt) {
+    		if (!done) {
+        		int progress = task.getProgress();
+        		progressBar.setValue(progress);
+    			}
+		}
 		*/
-		f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		f.setContentPane(scrollPane);					// Moze a i ne mora biti scrollPane
-		f.setSize(800,800);
-		EventQueue.invokeLater(new FrameShower(f));		// EventQueue dodajemo za slucaj velikih podataka da se uskladi racunanje i dizanje html forme
-		f.setVisible(true);
-	}
+	}	
 	private static class FrameShower implements Runnable{
 		private final Frame frame;
 		FrameShower(Frame frame){
