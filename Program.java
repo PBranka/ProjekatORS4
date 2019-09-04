@@ -74,6 +74,16 @@ public class Program
 		
 		return true;
 	}
+	
+	public int getProgress(int k)
+	{
+	       int br=0;
+	       for(int i=0; i < klijenti.get(k).lista.size(); i++)
+	   		if (klijenti.get(k).lista.get(i)!=null)
+				br++;
+	       return br/klijenti.get(k).lista.size()*100;
+					
+	}
 
 	// Poredi odredjene segmente dva klijenta i vrsi razmjenu, ako je to moguce.
 	public synchronized void transfer (int position, int from, int to) throws InterruptedException
